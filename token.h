@@ -9,12 +9,17 @@ enum TokenType {Identifier, Keyword, Number, Equal, EqualEqual, GreaterThan, Les
 
 class Token {
 	private:
+		std::string tokenEnumNames [22] = {"Identifier", "Keyword", "Number", "Equal", "EqualEqual", "GreaterThan", 
+					           "LessThan", "Colon", "ColonEqual", "Plus", "Minus", "Multiply", "Divide", 
+			      			   "Modulo", "Period", "OpenParenthesis", "ClosedParenthesis", "Comma", 
+			     			   "OpenBracket", "ClosedBracket", "OpenBrace", "ClosedBrace"};
+
 		TokenType type;
 		std::string instance;
 		int lineNumber;
 	public:
 		void printToken() {
-			std::cout << this->type << " " << this->instance << " " << this-> lineNumber << std::endl;
+			std::cout << tokenEnumNames[this->type] << " " << this->instance << " " << this-> lineNumber << std::endl;
 		}
 		void setType(TokenType type) {
 			this->type = type;

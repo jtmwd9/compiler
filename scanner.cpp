@@ -1,5 +1,4 @@
 #include "scanner.h"
-#include "token.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -8,13 +7,19 @@ using namespace std;
 
 Token Scanner::generateToken (string instance, int lineNumber, int classifier) {
 	Token temp;
+	string keywords [15] = {"start", "stop", "while", "for", "label", "exit", "listen", "talk", "program"
+				"if", "then", "assign", "declare", "jump", "else"};
 	switch (classifier) {
 		case -1:
 			//error
 			break;
 		case 1:
-			//check for keywords
 			temp.setType(Identifier);
+			for (int i = 0; i < 15; i++) {
+				if (instance == keywords[i]){
+					temp.setType(Keyword);
+				}
+			}
 			break;
 		case 2:
 			temp.setType(Number);
@@ -91,6 +96,13 @@ void Scanner::scan (string inp) {
 	Table table;
 
 	for (int i = 0; i < inp.length(); i++) {
+		if (inp[i] == '&'  && inp[i + 1] == '&') {
+			i += 3;
+			while (inp[i - 1] != '&'){
+				i++;
+			}
+			i++;
+		}
 		switch (inp[i]) {
 			case '$':
 				state = table.tokenTable[state][1];
@@ -149,6 +161,9 @@ void Scanner::scan (string inp) {
 			case ' ':
 				state = table.tokenTable[state][22];
 				break;
+			case '\t':
+				state = table.tokenTable[state][22];
+				break;
 			case '\n':
 				state = table.tokenTable[state][22];
 				lineNumber++;
@@ -161,11 +176,11 @@ void Scanner::scan (string inp) {
 				} else if (isdigit(inp[i])){
 					state = table.tokenTable[state][4];
 				} else {
-					//unknown character error
+					cout << "[UNKNOWN CHARACTER]";
 				}
 		}
 		if (state == -1) {
-			//error
+			cout << "[ERROR]"; //will add better error functionality when I know more about language
 		} else if (state >= 100) {	
 			state = state % 100;
 			Token toke = generateToken(instance, lineNumber, state);
