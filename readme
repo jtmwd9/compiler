@@ -1,0 +1,12 @@
+USING OPTION 3. FSA is in tokenFSA.h. Driver is scanner.cpp scan() 
+
+James Markus
+Scanner
+
+BUILD:
+	make scanner
+RUN:
+	./scanner [filename]
+		where filename is input file for testing. can also use <filename
+CLEAN:
+	make clean 

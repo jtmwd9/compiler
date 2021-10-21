@@ -17,7 +17,7 @@ class Token {
 		TokenType type;
 		std::string instance;
 		int lineNumber;
-	public:
+	public:	//just defined functions here because they're so short
 		void printToken() {
 			std::cout << tokenEnumNames[this->type] << " " << this->instance << " " << this-> lineNumber << std::endl;
 		}

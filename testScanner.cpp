@@ -10,7 +10,7 @@ void testScanner (string fileName) {
 	ifstream myFile;
 	myFile.open(fileName.c_str());
 	string inp = "", line;
-	while (getline(myFile, line)) {
+	while (getline(myFile, line)) { //turns file into a string
 		inp += line;
 		inp += '\n';
 	}

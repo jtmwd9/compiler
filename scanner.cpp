@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Token Scanner::generateToken (string instance, int lineNumber, int classifier) {
+Token Scanner::generateToken (string instance, int lineNumber, int classifier) {	//sets values for token and checks if identifiers are keywords
 	Token temp;
 	string keywords [15] = {"start", "stop", "while", "for", "label", "exit", "listen", "talk", "program"
 				"if", "then", "assign", "declare", "jump", "else"};
@@ -89,14 +89,14 @@ Token Scanner::generateToken (string instance, int lineNumber, int classifier) {
 	return temp;
 }
 
-void Scanner::scan (string inp) {
+void Scanner::scan (string inp) {			//runs string through FSA
 	int state = 0;
 	string instance = "";
 	int lineNumber = 1;
 	Table table;
 
 	for (int i = 0; i < inp.length(); i++) {
-		if (inp[i] == '&'  && inp[i + 1] == '&') {
+		if (inp[i] == '&'  && inp[i + 1] == '&') {	//ignores comnments
 			i += 3;
 			while (inp[i - 1] != '&'){
 				i++;
@@ -181,10 +181,10 @@ void Scanner::scan (string inp) {
 		}
 		if (state == -1) {
 			cout << "[ERROR]"; //will add better error functionality when I know more about language
-		} else if (state >= 100) {	
+		} else if (state >= 100) { //final state
 			state = state % 100;
 			Token toke = generateToken(instance, lineNumber, state);
-			tokens.push_back(toke);
+			tokens.push_back(toke);	//made a vector of tokens. don't really use it for this projects, but figured i might need it later
 			toke.printToken();
 			instance = "";
 			state = 0;

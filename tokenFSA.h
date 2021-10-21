@@ -1,6 +1,6 @@
 #ifndef TOKENFSA_H
 #define TOKENFSA_H
-class Table {
+class Table { //looks best on full screen. Not a lot of errors because I don't know the syntax of this language yet
 	public:
 		int tokenTable [22][23] =  {{ 0,  1,  1, -1,  2,  3,  5,  6,  7,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,  0},
 				       	    { 1, -1,  1,  1,  1,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101},
