@@ -1,6 +1,6 @@
 #include "scanner.h"
 #include <string>
-#include <vector>
+#include <queue>
 #include <iostream>
 
 using namespace std;
@@ -89,7 +89,7 @@ Token Scanner::generateToken (string instance, int lineNumber, int classifier) {
 	return temp;
 }
 
-void Scanner::scan (string inp) {			//runs string through FSA
+queue <Token> Scanner::scan (string inp) {			//runs string through FSA
 	int state = 0;
 	string instance = "";
 	int lineNumber = 1;
@@ -184,7 +184,7 @@ void Scanner::scan (string inp) {			//runs string through FSA
 		} else if (state >= 100) { //final state
 			state = state % 100;
 			Token toke = generateToken(instance, lineNumber, state);
-			tokens.push_back(toke);	//made a vector of tokens. don't really use it for this projects, but figured i might need it later
+			tokens.push(toke);	//made a vector of tokens. don't really use it for this projects, but figured i might need it later
 			toke.printToken();
 			instance = "";
 			state = 0;
@@ -195,4 +195,5 @@ void Scanner::scan (string inp) {			//runs string through FSA
 			}
 		}		
 	}
+	return tokens;
 }

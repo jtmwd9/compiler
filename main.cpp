@@ -1,12 +1,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <queue>
+#include "token.h"
 #include "testScanner.h"
 
 using namespace std;
 
 int main (int argc, char* argv[]) {
 	string fileName;
+	queue <Token> tokens;
 	if (argc == 1) {	//no command line args
 		string in;
 		ofstream myFile;	//puts keyboard input in a file to read later in testScanner.cpp
@@ -23,6 +26,6 @@ int main (int argc, char* argv[]) {
 		cout << "Incorrect arguments given. Refer to readme";
 		return -1;
 	}
-	testScanner(fileName);
+	tokens = testScanner(fileName);
 	return 0;
 }

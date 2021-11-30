@@ -1,7 +1,9 @@
 #ifndef TESTSCANNER_H
 #define TESTSCANNER_H
 #include <string>
+#include <queue>
+#include "token.h"
 
-void testScanner (std::string);
+std::queue <Token> testScanner (std::string);
 
 #endif

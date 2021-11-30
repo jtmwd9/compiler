@@ -2,13 +2,13 @@
 #define SCANNER_H
 #include "tokenFSA.h"
 #include "token.h"
-#include <vector>
+#include <queue>
 #include <string>
 
 class Scanner {
 	public:
-		std::vector <Token> tokens;
-		void scan(std::string);
+		std::queue <Token> tokens;
+		std::queue <Token> scan(std::string);
 		Token generateToken(std::string, int, int);
 };
 

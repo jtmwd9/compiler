@@ -1,12 +1,14 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <queue>
+#include "token.h"
 #include "scanner.h"
 
 using namespace std;
 
-void testScanner (string fileName) {
-
+queue <Token> testScanner (string fileName) {
+	queue <Token> tokens;
 	ifstream myFile;
 	myFile.open(fileName.c_str());
 	string inp = "", line;
@@ -16,6 +18,7 @@ void testScanner (string fileName) {
 	}
 
 	Scanner tester;
-	tester.scan(inp);
-
+	tokens = tester.scan(inp);
+	
+	return tokens;
 }
