@@ -5,8 +5,8 @@ void parse(queue <Token> tokens) {
 	Token token;
 
 	while (!tokens.empty()) {
-		token = Tokens.pop();
-		idToken(token, Tokens);
+		token = tokens.pop();
+		idToken(token, tokens);
 	}
 }
 
@@ -39,6 +39,8 @@ void idToken (Token token, queue <Token> tokens) {
 			//error
 	}
 }
+
+//change all to same as R and pass by reference
 
 void expr (Token token, queue <Token> tokens) {
 	if (token.instance == "+") {
@@ -74,7 +76,8 @@ void M {
 
 void R {
 	if (token.instance == "(") {
-		expr(tokens.pop(), tokens);
+		token = tokens.pop();
+		expr(token, tokens);
 		if (token.instance == ")") {
 			expr(tokens.pop(), tokens);
 		}
@@ -84,10 +87,65 @@ void R {
 }
 void keyword {
 	if (token.instance == "declare") {
-		vars(token,tokens);
-	} else if (token.instance == "listen" || token.instance == "talk" || token.instance == "if" || token.instance == "while" || token.instance == "assign" || token.instance == "jump" || token.instance == "label" || token.instance == "start") {
+		program(token, tokens);
+	} else {
 		stats(token, tokens);
 	}
+}
+
+void program {
+	vars(token, tokens);
+	if (token.instance == "program") {
+		token = tokens.pop();
+		block(token, tokens);
+	}
+}
+
+void vars {
+	if (token.instance == "declare") {
+		token = tokens.pop();
+		if (token.type == 0) {
+			token = tokens.pop();
+			if (token.instance == "=") {
+				token = tokens.pop();
+				if (token.type == 2) {
+					token = tokens.pop();
+					if (token.instance == ";") {
+						token = tokens.pop();
+						vars(token, tokens);
+					} else {
+						//error
+					}
+				} else {
+					//error
+				}
+			} else {
+				//error
+			}
+		} else {
+			//error
+		}
+	}
+}
+
+void block {
+	if (token.instance == "start") {
+		token = tokens.pop();
+		vars(token, tokens);
+		stats(token, tokens);
+		if (token.instance == "stop") {
+			token = token.pop();
+		}
+	}
+}
+
+void stats {
+	stat(token, tokens);
+	mstat(token, tokens);
+}
+
+void stat {
+	
 }
 
 void RO {
