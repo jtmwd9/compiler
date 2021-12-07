@@ -10,7 +10,7 @@ using namespace std;
 
 int main (int argc, char* argv[]) {
 	string fileName;
-	queue <Token*> tokens;
+	queue <Token> tokens;
 	if (argc == 1) {	//no command line args
 		string in;
 		ofstream myFile;	//puts keyboard input in a file to read later in testScanner.cpp
@@ -29,7 +29,10 @@ int main (int argc, char* argv[]) {
 	}
 
 	tokens = testScanner(fileName);
-cout<<tokens.front()->instance<<"       "<<endl;
+	Token temp;
+	temp.setType(EndOfFile);
+	temp.setInstance("EndOfFile");
+	tokens.push(temp);
 	parse(tokens);
 	return 0;
 }

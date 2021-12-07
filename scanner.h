@@ -7,9 +7,9 @@
 
 class Scanner {
 	public:
-		std::queue <Token*> tokens;
-		std::queue <Token*> scan(std::string);
-		Token* generateToken(std::string, int, int);
+		std::queue <Token> tokens;
+		std::queue <Token> scan(std::string);
+		Token generateToken(std::string, int, int);
 };
 
 #endif

@@ -5,14 +5,14 @@
 
 enum TokenType {Identifier, Keyword, Number, Equal, EqualEqual, GreaterThan, LessThan, Colon, ColonEqual, 
 	        Plus, Minus, Multiply, Divide, Modulo, Period, OpenParenthesis, ClosedParenthesis, Comma,
-	        OpenBracket, ClosedBracket, OpenBrace, ClosedBrace};
+	        OpenBracket, ClosedBracket, OpenBrace, ClosedBrace, EndOfFile};
 
 class Token {
 	public:
-		std::string tokenEnumNames [22] = {"Identifier", "Keyword", "Number", "Equal", "EqualEqual", "GreaterThan", 
+		std::string tokenEnumNames [23] = {"Identifier", "Keyword", "Number", "Equal", "EqualEqual", "GreaterThan", 
 					           "LessThan", "Colon", "ColonEqual", "Plus", "Minus", "Multiply", "Divide", 
 			      			   "Modulo", "Period", "OpenParenthesis", "ClosedParenthesis", "Comma", 
-			     			   "OpenBracket", "ClosedBracket", "OpenBrace", "ClosedBrace"};
+			     			   "OpenBracket", "ClosedBracket", "OpenBrace", "ClosedBrace", "EndOfFile"};
 
 		TokenType type;
 		std::string instance;

@@ -4,6 +4,6 @@
 #include <queue>
 #include "token.h"
 
-std::queue <Token*> testScanner (std::string);
+std::queue <Token> testScanner (std::string);
 
 #endif
