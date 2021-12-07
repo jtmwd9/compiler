@@ -22,7 +22,9 @@ class Token {
 			std::cout << tokenEnumNames[this->type] << " " << this->instance << " " << this-> lineNumber << std::endl;
 		}
 		void setType(TokenType type) {
+
 			this->type = type;
+
 		}
 		void setInstance(std::string instance) {
 			this->instance = instance;

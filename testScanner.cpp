@@ -7,8 +7,8 @@
 
 using namespace std;
 
-queue <Token> testScanner (string fileName) {
-	queue <Token> tokens;
+queue <Token*> testScanner (string fileName) {
+	queue <Token*> tokens;
 	ifstream myFile;
 	myFile.open(fileName.c_str());
 	string inp = "", line;
@@ -18,7 +18,9 @@ queue <Token> testScanner (string fileName) {
 	}
 
 	Scanner tester;
+
 	tokens = tester.scan(inp);
+
 	
 	return tokens;
 }

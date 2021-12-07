@@ -5,17 +5,21 @@
 
 using namespace std;
 
-Token Scanner::generateToken (string instance, int lineNumber, int classifier) {	//sets values for token and checks if identifiers are keywords
+Token* Scanner::generateToken (string instance, int lineNumber, int classifier) {	//sets values for token and checks if identifiers are keywords
 	Token temp;
 	string keywords [15] = {"start", "stop", "while", "for", "label", "exit", "listen", "talk", "program"
 				"if", "then", "assign", "declare", "jump", "else"};
+
 	switch (classifier) {
 		case -1:
 			//error
 			break;
 		case 1:
+
 			temp.setType(Identifier);
+
 			for (int i = 0; i < 15; i++) {
+
 				if (instance == keywords[i]){
 					temp.setType(Keyword);
 				}
@@ -85,11 +89,13 @@ Token Scanner::generateToken (string instance, int lineNumber, int classifier) {
 
 	temp.setLineNumber (lineNumber);
 	temp.setInstance (instance);
-
-	return temp;
+	Token* t = new Token;
+	t = &temp;
+cout<<"scanner "<<t->instance<<" scanner"<<endl;
+	return t;
 }
 
-queue <Token> Scanner::scan (string inp) {			//runs string through FSA
+queue <Token*> Scanner::scan (string inp) {			//runs string through FSA
 	int state = 0;
 	string instance = "";
 	int lineNumber = 1;
@@ -183,9 +189,13 @@ queue <Token> Scanner::scan (string inp) {			//runs string through FSA
 			cout << "[ERROR]"; //will add better error functionality when I know more about language
 		} else if (state >= 100) { //final state
 			state = state % 100;
-			Token toke = generateToken(instance, lineNumber, state);
+
+			Token* toke;
+			toke = generateToken(instance, lineNumber, state);
+cout<<"token return "<<toke->instance<<" token return"<<endl;
 			tokens.push(toke);	//made a vector of tokens. don't really use it for this projects, but figured i might need it later
-			toke.printToken();
+cout<<"scanner queue "<<tokens.front()->instance<<" scanner queue"<<endl;
+			//toke->printToken();
 			instance = "";
 			state = 0;
 			i--;	

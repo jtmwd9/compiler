@@ -4,12 +4,13 @@
 #include <queue>
 #include "token.h"
 #include "testScanner.h"
+#include "parser.h"
 
 using namespace std;
 
 int main (int argc, char* argv[]) {
 	string fileName;
-	queue <Token> tokens;
+	queue <Token*> tokens;
 	if (argc == 1) {	//no command line args
 		string in;
 		ofstream myFile;	//puts keyboard input in a file to read later in testScanner.cpp
@@ -26,6 +27,9 @@ int main (int argc, char* argv[]) {
 		cout << "Incorrect arguments given. Refer to readme";
 		return -1;
 	}
+
 	tokens = testScanner(fileName);
+cout<<tokens.front()->instance<<"       "<<endl;
+	parse(tokens);
 	return 0;
 }
