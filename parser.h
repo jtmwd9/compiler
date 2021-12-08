@@ -11,7 +11,7 @@ int N (Token &token, std::queue <Token> &tokens);
 int A (Token &token, std::queue <Token> &tokens);
 int M (Token &token, std::queue <Token> &tokens);
 int R (Token &token, std::queue <Token> &tokens);
-int keyword (Token &token, std::queue <Token> &tokens);
+void  keyword (Token &token, std::queue <Token> &tokens);
 void program (Token &token, std::queue <Token> &tokens);
 int vars (Token &token, std::queue <Token> &tokens);
 int block (Token &token, std::queue <Token> &tokens);

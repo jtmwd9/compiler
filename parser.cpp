@@ -7,18 +7,16 @@
 using namespace std;
 
 Tree tree;
+bool p;
 
 void parse(queue <Token> tokens) {
 	Token token;
-
+	p = false;
 	while (!tokens.empty()) {
 		token = tokens.front();
 		tokens.pop();
 		idToken(token, tokens);
 	}
-cout<<"pre print"<<endl;
-	tree.printTree(tree.nodes[0], 0);
-cout<<"post print"<<endl;
 }
 
 void idToken (Token &token, queue <Token> &tokens) {
@@ -59,11 +57,11 @@ void idToken (Token &token, queue <Token> &tokens) {
 int expr (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<vars>";
+	n.nt = "<expr>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "+") {
-		cout << "<expr> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -74,7 +72,7 @@ int expr (Token &token, queue <Token> &tokens) {
 		tokens.pop();
 		tree.addNode(index, expr(token, tokens));
 	} else {
-cout <<"expr"<<endl;
+
 		tree.addNode(index, N(token,tokens));
 	}
 	return (index);
@@ -83,11 +81,11 @@ cout <<"expr"<<endl;
 int N (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<vars>";
+	n.nt = "<N>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "/" || token.instance == "*") {
-		cout << "<N> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -106,11 +104,11 @@ int N (Token &token, queue <Token> &tokens) {
 int A (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<vars>";
+	n.nt = "<A>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "-") {
-		cout << "<A> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -129,11 +127,11 @@ int A (Token &token, queue <Token> &tokens) {
 int M (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<vars>";
+	n.nt = "<M>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == ".") {
-		cout << "<M> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -152,11 +150,11 @@ int M (Token &token, queue <Token> &tokens) {
 int R (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<vars>";
+	n.nt = "<R>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "(") {
-		cout << "<R> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -167,7 +165,7 @@ int R (Token &token, queue <Token> &tokens) {
 		tokens.pop();
 		tree.addNode(index, expr(token, tokens));
 		if (token.instance == ")") {
-			cout << "<expr> : " << token.instance << endl;
+
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
@@ -179,7 +177,7 @@ int R (Token &token, queue <Token> &tokens) {
 			tree.addNode(index, expr(token, tokens));
 		}
 	} else if (token.type == 0 || token.type == 2) {
-		cout << "<R> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -192,18 +190,20 @@ int R (Token &token, queue <Token> &tokens) {
 	}
 	return (index);
 }
-int keyword (Token &token, queue <Token> &tokens) {
-	node n;
-	n.toke = token;
-	n.nt = "<vars>";
-	int index = tree.nodes.size();
-	tree.nodes.push_back(n);
-	if (token.instance == "declare" || token.instance == "program") {
+void keyword (Token &token, queue <Token> &tokens) {
+	if (token.instance == "program" && p == false) {
+		p = true;
 		program(token, tokens);
+	} else if (token.instance == "declare") {
+		if (p = false) {
+			p = true;
+			program(token, tokens);
+		} else {
+			tree.addNode(tree.nodes.size() - 1, vars(token, tokens));
+		}
 	} else {
-		tree.addNode(index, stats(token, tokens));
+		tree.addNode(tree.nodes.size() - 1, stats(token, tokens));
 	}
-	return (index);
 }
 
 void program (Token &token, queue <Token> &tokens) {
@@ -213,7 +213,7 @@ void program (Token &token, queue <Token> &tokens) {
 	tree.nodes.push_back(h);
 	tree.addNode(0, vars(token, tokens));
 	if (token.instance == "program") {
-		cout << "<program> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -222,6 +222,7 @@ void program (Token &token, queue <Token> &tokens) {
 		tree.addNode(0, index1);
 		token = tokens.front();
 		tokens.pop();
+cout <<"pblock"<<endl;
 		tree.addNode(0, block(token, tokens));
 	} else {
 		cout<<"ERROR EXPECTING TYPE <PROGRAM>, RECIEVED " << token.instance << endl;;
@@ -236,7 +237,7 @@ int vars (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "declare") {
-		cout << "<vars> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -246,7 +247,7 @@ int vars (Token &token, queue <Token> &tokens) {
 		token = tokens.front();
 		tokens.pop();
 		if (token.type == 0) {
-			cout << "<vars> : " << token.instance << endl;
+			tree.vars.push_back(token.instance);
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
@@ -256,7 +257,7 @@ int vars (Token &token, queue <Token> &tokens) {
 			token = tokens.front();
 			tokens.pop();
 			if (token.instance == "=") {
-				cout << "<vars> : " << token.instance << endl;
+
 				node n3;
 				n3.toke = token;
 				n3.nt = "";
@@ -266,7 +267,7 @@ int vars (Token &token, queue <Token> &tokens) {
 				token = tokens.front();
 				tokens.pop();
 				if (token.type == 2) {
-					cout << "<vars> : " << token.instance << endl;
+
 					node n4;
 					n4.toke = token;
 					n4.nt = "";
@@ -276,7 +277,7 @@ int vars (Token &token, queue <Token> &tokens) {
 					token = tokens.front();
 					tokens.pop();
 					if (token.instance == ";") {
-						cout << "<vars> : " << token.instance << endl;
+
 						node n5;
 						n5.toke = token;
 						n5.nt = "";
@@ -313,7 +314,7 @@ int block (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "start") {
-		cout << "<block> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -324,16 +325,16 @@ int block (Token &token, queue <Token> &tokens) {
 		tokens.pop();
 		tree.addNode(index, vars(token, tokens));
 		tree.addNode(index, stats(token, tokens));
-cout <<"back from stats"<<endl;
+
 		if (token.instance == "stop") {
-cout <<"stop"<<endl;
+
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
 			int index2 = tree.nodes.size();
 			tree.nodes.push_back(n2);
 			tree.addNode(index, index2);
-			cout << "<block> : " << token.instance << endl;
+
 			token = tokens.front();
 			tokens.pop();
 		} else {
@@ -350,7 +351,7 @@ cout <<"stop"<<endl;
 int stats (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<stats>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	tree.addNode(index, stat(token, tokens));
@@ -360,10 +361,10 @@ int stats (Token &token, queue <Token> &tokens) {
 }
 
 int mstat (Token &token, queue <Token> &tokens) {
-cout <<"enter mstat"<<endl;
+
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<mstat>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "listen"||token.instance == "talk"||token.instance == "if"||token.instance == "while"|| token.instance == "assign"||token.instance == "jump") {
@@ -376,11 +377,11 @@ cout <<"enter mstat"<<endl;
 int stat (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<stat>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "listen") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -390,7 +391,7 @@ int stat (Token &token, queue <Token> &tokens) {
 		token = tokens.front();
 		tokens.pop();
 		tree.addNode(index, in(token, tokens));
-cout <<"post in"<<endl;
+
 		if (token.instance == ";") {
 			node n2;
 			n2.toke = token;
@@ -400,10 +401,10 @@ cout <<"post in"<<endl;
 			tree.addNode(index, index2);
 			token = tokens.front();
 			tokens.pop();
-cout <<"post ;"<<endl;
+
 		}
 	} else if (token.instance == "talk") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -424,7 +425,7 @@ cout <<"post ;"<<endl;
 			tokens.pop();
 		}
 	} else if (token.instance == "if") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -445,7 +446,7 @@ cout <<"post ;"<<endl;
 			tokens.pop();
 		}
 	} else if (token.instance == "while") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -466,7 +467,7 @@ cout <<"post ;"<<endl;
 			tokens.pop();
 		}
 	} else if (token.instance == "assign") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -487,7 +488,7 @@ cout <<"post ;"<<endl;
 			tokens.pop();
 		}
 	} else if (token.instance == "jump") {
-		cout << "<stat> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -507,6 +508,27 @@ cout <<"post ;"<<endl;
 			token = tokens.front();
 			tokens.pop();
 		}
+	} else if (token.instance == "label") {
+
+		node n1;
+		n1.toke = token;
+		n1.nt = "";
+		int index1 = tree.nodes.size();
+		tree.nodes.push_back(n1);
+		tree.addNode(index, index1);
+		token = tokens.front();
+		tokens.pop();
+		tree.addNode(index, label(token, tokens));
+		if (token.instance == ";") {
+			node n2;
+			n2.toke = token;
+			n2.nt = "";
+			int index2 = tree.nodes.size();
+			tree.nodes.push_back(n2);
+			tree.addNode(index, index2);
+			token = tokens.front();
+			tokens.pop();
+		}
 	} else {
 		tree.addNode(index, block(token, tokens));
 	}	
@@ -516,7 +538,7 @@ cout <<"post ;"<<endl;
 int in (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<in>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
@@ -526,10 +548,10 @@ int in (Token &token, queue <Token> &tokens) {
 		int index2 = tree.nodes.size();
 		tree.nodes.push_back(n2);
 		tree.addNode(index, index2);
-		cout << "<in> : " << token.instance << endl;
+
 		token = tokens.front();
 		tokens.pop();
-cout <<"end of in"<<endl;
+
 	} else {
 		cout<<"ERROR EXPECTING IDENTIFIER FOR TYPE <IN>, RECIEVED " << token.instance << endl;;
 		exit(EXIT_FAILURE);
@@ -540,7 +562,7 @@ cout <<"end of in"<<endl;
 int out (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<out>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	tree.addNode(index, expr(token, tokens));
@@ -550,11 +572,11 @@ int out (Token &token, queue <Token> &tokens) {
 int if_ (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<if>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "[") {	
-		cout << "<if> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -564,12 +586,12 @@ int if_ (Token &token, queue <Token> &tokens) {
 		token = tokens.front();
 		tokens.pop();
 		tree.addNode(index, expr(token, tokens));
-cout <<"pre if RO"<<endl;
+
 		tree.addNode(index, RO(token, tokens));
-cout << "if to expr"<<endl;
+
 		tree.addNode(index, expr(token, tokens));
 		if (token.instance == "]") {
-			cout << "<if> : " << token.instance << endl;
+
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
@@ -579,7 +601,7 @@ cout << "if to expr"<<endl;
 			token = tokens.front();
 			tokens.pop();
 			if (token.instance == "then") {
-				cout << "<if> : " << token.instance << endl;
+
 				node n3;
 				n3.toke = token;
 				n3.nt = "";
@@ -590,7 +612,7 @@ cout << "if to expr"<<endl;
 				tokens.pop();
 				tree.addNode(index, stat(token, tokens));
 				if (token.instance == "else") {
-					cout << "<if> : " << token.instance << endl;
+
 					node n4;
 					n4.toke = token;
 					n4.nt = "";
@@ -619,11 +641,11 @@ cout << "if to expr"<<endl;
 int loop (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<loop>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == "[") {
-		cout << "<loop> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -636,7 +658,7 @@ int loop (Token &token, queue <Token> &tokens) {
 		tree.addNode(index, RO(token, tokens));
 		tree.addNode(index, expr(token, tokens));
 		if (token.instance == "]") {
-		cout << "<loop> : " << token.instance << endl;
+
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
@@ -660,11 +682,11 @@ int loop (Token &token, queue <Token> &tokens) {
 int assign (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<assign>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
-		cout << "<assign> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -674,7 +696,7 @@ int assign (Token &token, queue <Token> &tokens) {
 		token = tokens.front();
 		tokens.pop();
 		if (token.instance == "=") {
-		cout << "<assign> : " << token.instance << endl;
+
 			node n2;
 			n2.toke = token;
 			n2.nt = "";
@@ -698,11 +720,11 @@ int assign (Token &token, queue <Token> &tokens) {
 int label (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<label>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
-		cout << "<label> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -721,11 +743,11 @@ int label (Token &token, queue <Token> &tokens) {
 int goto_ (Token &token, queue <Token> &tokens) {
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
-		cout << "<goto> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -744,11 +766,11 @@ int goto_ (Token &token, queue <Token> &tokens) {
 int RO (Token &token, queue <Token> &tokens){
 	node n;
 	n.toke = token;
-	n.nt = "<block>";
+	n.nt = "<RO>";
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.instance == ">" || token.instance == "<" || token.instance == "==" || token.instance == "%") {
-		cout << "<RO> : " << token.instance << endl;
+
 		node n1;
 		n1.toke = token;
 		n1.nt = "";
@@ -764,7 +786,7 @@ int RO (Token &token, queue <Token> &tokens){
 		int index2 = tree.nodes.size();
 		tree.nodes.push_back(n2);
 		tree.addNode(index, index2);
-		cout << "<RO> : " << token.instance << endl;
+
 		token = tokens.front();
 		tokens.pop();
 		if (token.instance == "==") {
@@ -774,18 +796,18 @@ int RO (Token &token, queue <Token> &tokens){
 			int index3 = tree.nodes.size();
 			tree.nodes.push_back(n3);
 			tree.addNode(index, index3);
-			cout << "<RO> : " << token.instance << endl;
+
 			token = tokens.front();
 			tokens.pop();
 			if (token.instance == "}") {
-				cout << "<RO> : " << token.instance << endl;
+
 				node n4;
 				n4.toke = token;
 				n4.nt = "";
 				int index4 = tree.nodes.size();
 				tree.nodes.push_back(n4);
 				tree.addNode(index, index4);
-cout <<"RO"<<endl;
+
 				token = tokens.front();
 				tokens.pop();
 			} else {

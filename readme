@@ -1,12 +1,14 @@
-USING OPTION 3. FSA is in tokenFSA.h. Driver is scanner.cpp scan() 
+I apologize that this is so late. I was falling behind due to academic and personal issues, so I needed to take advantage of your generous
+late policy in this course. My tree doesn't print perfectly. It is supposed to print one level per line in pre order, but I had a little trouble
+coding when to print on a new line. It is still readable, and I don't think it will affect future projects.
 
 James Markus
-Scanner
+Parser
 
 BUILD:
-	make scanner
+	make frontEnd
 RUN:
-	./scanner [filename]
+	./frontEnd [filename]
 		where filename is input file for testing. can also use <filename
 CLEAN:
 	make clean 

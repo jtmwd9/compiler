@@ -1,5 +1,5 @@
-parser:
-	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o parser
+frontEnd:
+	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o frontEnd
 
 clean:
-	rm parser inputtestfile
+	rm frontEnd inputtestfile
