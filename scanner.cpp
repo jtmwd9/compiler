@@ -189,7 +189,6 @@ queue <Token> Scanner::scan (string inp) {			//runs string through FSA
 
 			Token toke;
 			toke = generateToken(instance, lineNumber, state);
-
 			tokens.push(toke);	//made a vector of tokens. don't really use it for this projects, but figured i might need it later
 
 			//toke->printToken();

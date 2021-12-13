@@ -5,6 +5,7 @@
 #include "token.h"
 #include "testScanner.h"
 #include "parser.h"
+#include "tree.h"
 
 using namespace std;
 
@@ -33,6 +34,11 @@ int main (int argc, char* argv[]) {
 	temp.setType(EndOfFile);
 	temp.setInstance("EndOfFile");
 	tokens.push(temp);
-	parse(tokens);
+	Tree tree;
+	tree = parse(tokens);
+while (!tokens.empty()) {
+	cout << tokens.front().instance << endl;
+	tokens.pop();
+}
 	return 0;
 }

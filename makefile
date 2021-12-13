@@ -1,5 +1,5 @@
-frontEnd:
-	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o frontEnd
+statSem:
+	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o statSem
 
 clean:
-	rm frontEnd inputtestfile
+	rm statSem inputtestfile

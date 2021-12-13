@@ -4,7 +4,7 @@
 #include "token.h"
 #include "tree.h"
 
-void parse(std::queue <Token> tokens);
+Tree parse(std::queue <Token> tokens);
 void idToken (Token &token, std::queue <Token> &tokens);
 int expr (Token &token, std::queue <Token> &tokens);
 int N (Token &token, std::queue <Token> &tokens);

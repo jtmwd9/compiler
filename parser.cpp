@@ -9,7 +9,7 @@ using namespace std;
 Tree tree;
 bool p;
 
-void parse(queue <Token> tokens) {
+Tree parse (queue <Token> tokens) {
 	Token token;
 	p = false;
 	while (!tokens.empty()) {
@@ -17,6 +17,8 @@ void parse(queue <Token> tokens) {
 		tokens.pop();
 		idToken(token, tokens);
 	}
+	
+	return tree;
 }
 
 void idToken (Token &token, queue <Token> &tokens) {
@@ -177,6 +179,10 @@ int R (Token &token, queue <Token> &tokens) {
 			tree.addNode(index, expr(token, tokens));
 		}
 	} else if (token.type == 0 || token.type == 2) {
+		if (tree.checkVar(token.instance) == false && token.type == 0) {
+			cout << "<R> ERROR: IDENTIFIER : " << token.instance << " NOT DECLARED" << token.type << endl;
+			exit(EXIT_FAILURE);
+		}
 
 		node n1;
 		n1.toke = token;
@@ -222,7 +228,6 @@ void program (Token &token, queue <Token> &tokens) {
 		tree.addNode(0, index1);
 		token = tokens.front();
 		tokens.pop();
-cout <<"pblock"<<endl;
 		tree.addNode(0, block(token, tokens));
 	} else {
 		cout<<"ERROR EXPECTING TYPE <PROGRAM>, RECIEVED " << token.instance << endl;;
@@ -247,6 +252,10 @@ int vars (Token &token, queue <Token> &tokens) {
 		token = tokens.front();
 		tokens.pop();
 		if (token.type == 0) {
+			if (tree.checkVar(token.instance) == true) {
+				cout << "ERROR: IDENTIFIER: " << token.instance << " ALREADY DECLARED" <<endl;
+				exit(EXIT_FAILURE);
+			}
 			tree.vars.push_back(token.instance);
 			node n2;
 			n2.toke = token;
@@ -542,6 +551,10 @@ int in (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
+		if (tree.checkVar(token.instance) == false) {
+			cout << "ERROR: IDENTIFIER : " << token.instance << " NOT DECLARED" <<endl;
+			exit(EXIT_FAILURE);
+		}
 		node n2;
 		n2.toke = token;
 		n2.nt = "";
@@ -686,6 +699,10 @@ int assign (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
+		if (tree.checkVar(token.instance) == false) {
+			cout << "ERROR: IDENTIFIER : " << token.instance << " NOT DECLARED" <<endl;
+			exit(EXIT_FAILURE);
+		}
 
 		node n1;
 		n1.toke = token;
@@ -724,6 +741,11 @@ int label (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
+		if (tree.checkVar(token.instance) == true) {
+			cout << "ERROR: IDENTIFIER: " << token.instance << " ALREADY DECLARED" <<endl;
+			exit(EXIT_FAILURE);
+		}
+		tree.vars.push_back(token.instance);
 
 		node n1;
 		n1.toke = token;
@@ -747,6 +769,10 @@ int goto_ (Token &token, queue <Token> &tokens) {
 	int index = tree.nodes.size();
 	tree.nodes.push_back(n);
 	if (token.type == 0) {
+		if (tree.checkVar(token.instance) == false) {
+			cout << "ERROR: IDENTIFIER : " << token.instance << " NOT DECLARED" <<endl;
+			exit(EXIT_FAILURE);
+		}
 
 		node n1;
 		n1.toke = token;
