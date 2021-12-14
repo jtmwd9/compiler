@@ -1,12 +1,12 @@
-I did the global option. Returns nothing if everything is alright. Print errors and ends if something is amiss
+I did the global option. Returns only output file name if everything is alright. Print errors and ends if something is amiss
 
 James Markus
-Static Semantics
+Compiler
 
 BUILD:
-	make statSem
+	make compfs
 RUN:
-	./statSem [filename]
+	./compfs [filename]
 		where filename is input file for testing. can also use <filename
 CLEAN:
 	make clean 

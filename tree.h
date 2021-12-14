@@ -17,6 +17,7 @@ class Tree {
 		node head;
 		std::vector<node> nodes;
 		std::vector <std::string> vars;
+		std::vector <std::string> vals;
 		CodeGen cg;
 		void addNode (int i, int o) {
 			node* nptr = &this->nodes[o];

@@ -10,7 +10,7 @@
 using namespace std;
 
 int main (int argc, char* argv[]) {
-	string fileName;
+	string fileName, outfile;
 	queue <Token> tokens;
 	if (argc == 1) {	//no command line args
 		string in;
@@ -22,8 +22,11 @@ int main (int argc, char* argv[]) {
 		}
 		myFile.close();
 		fileName = "inputtestfile";
+		outfile = "kb.asm";
 	} else if (argc == 2) {
 		fileName = argv[1];
+		outfile = fileName;
+		outfile += ".asm";
 	} else {
 		cout << "Incorrect arguments given. Refer to readme";
 		return -1;
@@ -39,6 +42,14 @@ int main (int argc, char* argv[]) {
 	tree = parse(tokens);
 	cg.init(tokens);
 	cg.gen();
-	cout << cg.code;
+	for (int i = 0; i < tree.vals.size(); i++) {
+		cg.code += (tree.vars[i] + " " + tree.vals[i] + "\n");
+	}
+	cg.code += "STOP";
+	ofstream myfile;
+	myfile.open(outfile.c_str());
+	myfile << cg.code;
+	myfile.close();
+	cout << outfile << endl;
 	return 0;
 }

@@ -276,7 +276,7 @@ int vars (Token &token, queue <Token> &tokens) {
 				token = tokens.front();
 				tokens.pop();
 				if (token.type == 2) {
-
+					tree.vals.push_back(token.instance);
 					node n4;
 					n4.toke = token;
 					n4.nt = "";
