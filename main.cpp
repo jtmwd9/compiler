@@ -45,7 +45,6 @@ int main (int argc, char* argv[]) {
 	for (int i = 0; i < tree.vals.size(); i++) {
 		cg.code += (tree.vars[i] + " " + tree.vals[i] + "\n");
 	}
-	cg.code += "STOP";
 	ofstream myfile;
 	myfile.open(outfile.c_str());
 	myfile << cg.code;

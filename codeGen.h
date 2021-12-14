@@ -13,6 +13,7 @@ class CodeGen {
 	public:
 		queue <Token> t;
 		stack <string> wbuffer;
+		queue <string> tempys;
 		string code, tmp;
 		bool w;
 		int lp, tm;
@@ -36,7 +37,7 @@ class CodeGen {
 				temp = ("t" + ss.str());
 				this->tm++;
 			}
-
+			this->tempys.push(temp);
 			return temp;
 		}
 
@@ -122,28 +123,39 @@ class CodeGen {
 			this->t.pop();
 			op = this->t.front().instance;
 			this->t.pop();
+			if (op == "{") {
+				op = this->t.front().instance;
+				this->t.pop();
+				this->t.pop();
+			}
 			if (op == "==") {
-				this->code += ("SUB " + this->t.front().instance + "\nBRZERO " + this->tmp + "\n");
+				this->code += ("SUB " + this->t.front().instance + "\nBRNEG " + this->tmp + "\n");
+				this->code += ("BRPOS " + this->tmp + "\n");
 			} else if (op == ">") {
-				this->code += ("SUB " + this->t.front().instance + "\nBRPNEG " + this->tmp + "\n");	
+				this->code += ("SUB " + this->t.front().instance + "\nBRNEG " + this->tmp + "\n");	
 			} else if (op == "<") {
 				this->code += ("SUB " + this->t.front().instance + "\nBRPOS " + this->tmp + "\n");
 			}
 			this->w = true;
 			this->wbuffer.push(this->tmp);
-			this->wbuffer.top() += ":\n";
+			this->wbuffer.top() += ": ";
 		}
 
 		void loop () {
 			this->tmp = tempVar(0);
 			this->w = true;
-			this->code += this->tmp + ":\n";
+			this->code += this->tmp + ": ";
 			this->wbuffer.push("LOAD " + this->t.front().instance + "\n");
 			this->t.pop();
 			string op = this->t.front().instance;
 			this->t.pop();
+			if (op == "{") {
+				op = this->t.front().instance;
+				this->t.pop();
+			}
 			if (op == "==") {
-				this->wbuffer.top() += "SUB " + this->t.front().instance + "\nBRZERO " + this->tmp + "\n";
+				this->wbuffer.top() += "SUB " + this->t.front().instance + "\nBRNEG " + this->tmp + "\n";
+				this->code += ("BRPOS " + this->tmp + "\n");
 			} else if (op == ">") {
 				this->wbuffer.top() += "SUB " + this->t.front().instance + "\nBRNEG " + this->tmp + "\n";	
 			} else if (op == "<") {
@@ -183,7 +195,7 @@ class CodeGen {
 					this->code += "BR " + this->t.front().instance + "\n";
 				} else if (this->t.front().instance == "label") {
 					this->t.pop();
-					this->code += this->t.front().instance + ":\n";
+					this->code += this->t.front().instance + ": ";
 				} else if (this->t.front().instance == "if") {
 					this->t.pop();
 					this->t.pop();
@@ -198,6 +210,15 @@ class CodeGen {
 				} else {
 					this->t.pop();
 				}
+			};
+			while (!this->wbuffer.empty()) {
+				this->code += this->wbuffer.top() + ": ";
+				this->wbuffer.pop();
+			}
+			this->code += "STOP\n";
+			while (!tempys.empty()) {
+				this->code += (tempys.front() + " 0\n");
+				tempys.pop(); 
 			};
 		}
 };
