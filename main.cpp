@@ -31,14 +31,14 @@ int main (int argc, char* argv[]) {
 
 	tokens = testScanner(fileName);
 	Token temp;
+	CodeGen cg;
 	temp.setType(EndOfFile);
 	temp.setInstance("EndOfFile");
 	tokens.push(temp);
 	Tree tree;
 	tree = parse(tokens);
-while (!tokens.empty()) {
-	cout << tokens.front().instance << endl;
-	tokens.pop();
-}
+	cg.init(tokens);
+	cg.gen();
+	cout << cg.code;
 	return 0;
 }

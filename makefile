@@ -1,5 +1,5 @@
-statSem:
-	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o statSem
+compfs:
+	g++ main.cpp testScanner.cpp scanner.cpp parser.cpp -o compfs
 
 clean:
-	rm statSem inputtestfile
+	rm compfs inputtestfile

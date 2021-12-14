@@ -10,15 +10,17 @@ using namespace std;
 class CodeGen {
 	public:
 		queue <Token> t;
+		queue <string> wbuffer;
 		string code;
 		bool w;
-		int l, t;
+		int lp, tmp;
 
 		void init (queue <Token> temp) {
-			while (!temp.empty) {
+			while (!temp.empty()) {
 				this->t.push(temp.front());
 				temp.pop();
-			}
+			};
+cout << "we got to init" << endl;
 		}
 
 		string tempVar (int o) {
@@ -26,21 +28,55 @@ class CodeGen {
 
 			if (o == 0) {
 
-				this->l++;
+				this->lp++;
 			} else {
 
-				this->t++;
+				this->tmp++;
 			}
 
 			return temp;
 		}
 
+		void stop () {
+			if (this->w == true) {
+				this->code += this->wbuffer.front();
+				this->w = false;
+				this->wbuffer.pop();
+			}
+			this->t.pop();
+		}
+
+		void expr () {
+			this->code += "LOAD " + this->t.front().instance + "\n";
+			this->t.pop();
+			if (this->t.front().instance == "/") {
+
+			} else if (this->t.front().instance == "*") {
+
+			} else if (this->t.front().instance == "+") {
+
+			} else if (this->t.front().instance == "-") {
+
+			} 
+		}
+
+		void if_ () {
+
+		}
+
+		void loop () {
+
+		}
+
 		void gen () {
 			this->w = false;
 			this->code = "";
-			this->l = this->t = 0;
+			this->wbuffer = "";
+			this->lp = this->tmp = 0;
+cout << this->t.front().instance << endl;
+			string temp;
 
-			while(!this->t.empty) {
+			while(!this->t.empty()) {
 				if (this->t.front().instance == "declare") {
 					while (this->t.front().instance != ";") {
 						this->t.pop();
@@ -48,25 +84,26 @@ class CodeGen {
 				} else if (this->t.front().instance == "start") {
 					this->t.pop();
 				} else if (this->t.front().instance == "listen") {
-					code += "READ ";
+					this->code += "READ ";
 					this->t.pop();
-					code += this->t.front().instance + "\n";
+					this->code += this->t.front().instance + "\n";
 				} else if (this->t.front().instance == "talk") {
-					code += "WRITE ";
+					this->code += "WRITE ";
 					this->t.pop();
-					code += this->t.front().instance + "\n";
+					this->code += this->t.front().instance + "\n";
 				} else if (this->t.front().instance == "assign") {
 					this->t.pop();
-					code += this->t.front().instance + " = ";
+					temp = this->t.front().instance;
 					this->t.pop();
 					this->t.pop();
 					this->expr();
+					this->code += "STORE " + temp + "\n";
 				} else if (this->t.front().instance == "jump") {
 					this->t.pop();
-					code += "BR " + this->t.front().instance + "\n";
+					this->code += "BR " + this->t.front().instance + "\n";
 				} else if (this->t.front().instance == "label") {
 					this->t.pop();
-					c += this->t.front() + ":\n";
+					this->code += this->t.front().instance + ":\n";
 				} else if (this->t.front().instance == "if") {
 					this->t.pop();
 					this->if_();
@@ -75,10 +112,11 @@ class CodeGen {
 					this->loop();
 				} else if (this->t.front().instance == "stop") {	
 					this->stop();
+					this->t.pop();
 				} else {
 					this->t.pop();
 				}
-			}
+			};
 		}
 };
 
